@@ -40,3 +40,7 @@
 
 # git
 .github/
+
+# catkin
+build/
+devel/
