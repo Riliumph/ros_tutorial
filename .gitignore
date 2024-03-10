@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# Draw.io
+*.bkp
+*.dtmp
+
+# log
+*.log
+
+# git
+.github/

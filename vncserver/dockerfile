@@ -1,0 +1,70 @@
+FROM ros:noetic
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# deb http://archive.ubuntu.com/ubuntu/ focal-updates multiverse
+RUN sed -i 's@http://archive.ubuntu.com/ubuntu/@http://ftp.jaist.ac.jp/pub/Linux/ubuntu/@g' /etc/apt/sources.list
+# utility系のインストール
+RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq\
+    && apt-get install --no-install-recommends -y\
+    peco\
+    silversearcher-ag\
+    vim less\
+    lsof curl wget dnsutils iproute2 iputils-ping traceroute\
+    # docker multiprocess
+    supervisor\
+    # Windows System系
+    dbus-x11 x11-utils x11-xserver-utils x11-apps\
+    ibus-mozc language-pack-ja-base language-pack-ja\
+    # VNC系
+    tigervnc-standalone-server tigervnc-common tigervnc-xorg-extension tigervnc-viewer\
+    # tightvncserver\
+    # novnc websockify\
+    xfonts-base\
+    # Desktop Environment
+    # ubuntu-gnome-desktop
+    # xubuntu-desktop
+    # xfce4 xfce4-goodies\
+    lxde\
+    && apt-get clean\
+    && rm -rf /var/lib/apt/lists/*
+
+# 開発用ユーザー追加
+ENV USER ros_dev
+ENV HOME /home/${USER}
+ENV SHELL /bin/bash
+RUN useradd -m ${USER}\
+    && gpasswd -a ${USER} sudo\
+    && groupadd supervisor\
+    && gpasswd -a ${USER} supervisor\
+    && echo "${USER}:${USER}" | chpasswd
+
+# ROSディレクトリを開発用ユーザーでアクセスできるように変更
+RUN chown -R :${USER} /opt/ros\
+    && chmod -R g+rx /opt/ros
+
+# Supervisor
+COPY ./supervisor/vncserver.conf /etc/supervisor/conf.d/vncserver.conf
+RUN mkdir -p /var/run/supervisor\
+    && chown -R :supervisor /var/run/supervisor\
+    && chmod -R g+wr /var/run/supervisor\
+    && chown -R :supervisor /etc/supervisor\
+    && chmod -R g+wr /etc/supervisor\
+    && chown -R :supervisor /var/log/supervisor\
+    && chmod -R g+wr /var/log/supervisor
+
+# VNC
+COPY .vnc/ /home/${USER}/.vnc/
+RUN chown -R 1000:1000 /home/${USER}/.vnc/
+
+WORKDIR /home/${USER}
+USER ${USER}
+RUN echo -e "${USER}\n${USER}\n" | vncpasswd -f > ~/.vnc/passwd
+
+# ROS
+RUN echo "source /opt/ros/noetic/setup.bash" >> $HOME/.bashrc
+
+# ENTRYPOINT
+WORKDIR /home/${USER}
+COPY start.sh ./start.sh
+COPY vncstart.sh ./vncstart.sh
+ENTRYPOINT [ "./start.sh" ]

@@ -1,0 +1,40 @@
+version: '3'
+services:
+  devcontainer:
+    build:
+      context: ./vncserver
+      dockerfile: dockerfile
+    shm_size: 256m # GUI用に共有メモリ拡張
+    stdin_open: true
+    tty: true
+    volumes: # docker-compse.yamlのパスがroot
+      - .:/home/ros_dev/workspace:cached
+    # NW
+    hostname: vncserver
+    networks:
+      - ros_nw
+
+  novncserver:
+    build:
+      context: ./novncserver/
+      dockerfile: dockerfile
+    depends_on:
+      - devcontainer
+    environment:
+      - VNC_SERVER_HOST=vncserver
+    # NW
+    hostname: novnc-server
+    networks:
+      - ros_nw
+    ports:
+      # noVNC port
+      - target: 6080
+        published: 6081
+
+networks:
+  ros_nw:
+    external: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.20.0.0/16
