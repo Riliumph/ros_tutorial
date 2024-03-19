@@ -57,6 +57,7 @@ COPY --chown=${USER}:${USER} vncstart.sh /var/run/supervisor/vncstart.sh
 WORKDIR ${HOME}
 USER ${USER}
 RUN echo -e "${USER}\n${USER}\n" | vncpasswd -f > ~/.vnc/passwd
+COPY --chown=${USER}:${USER} .bash_aliases $HOME/.bash_aliases
 
 # ROS
 RUN echo "source /opt/ros/noetic/setup.bash" >> $HOME/.bashrc
