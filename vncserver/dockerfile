@@ -34,29 +34,26 @@ ENV HOME /home/${USER}
 ENV SHELL /bin/bash
 RUN useradd -m ${USER}\
     && gpasswd -a ${USER} sudo\
-    && groupadd supervisor\
-    && gpasswd -a ${USER} supervisor\
+    && groupadd ros && gpasswd -a ${USER} ros\
+    && groupadd supervisor && gpasswd -a ${USER} supervisor\
     && echo "${USER}:${USER}" | chpasswd
 
 # ROSディレクトリを開発用ユーザーでアクセスできるように変更
-RUN chown -R :${USER} /opt/ros\
+RUN chown -R :ros /opt/ros\
     && chmod -R g+rx /opt/ros
 
 # Supervisor
-COPY ./supervisor/vncserver.conf /etc/supervisor/conf.d/vncserver.conf
+COPY --chown=:supervisor --chmod=664 ./supervisor/vncserver.conf /etc/supervisor/conf.d/vncserver.conf
 RUN mkdir -p /var/run/supervisor\
     && chown -R :supervisor /var/run/supervisor\
     && chmod -R g+wr /var/run/supervisor\
-    && chown -R :supervisor /etc/supervisor\
-    && chmod -R g+wr /etc/supervisor\
     && chown -R :supervisor /var/log/supervisor\
     && chmod -R g+wr /var/log/supervisor
 
 # VNC
-COPY .vnc/ /home/${USER}/.vnc/
-RUN chown -R 1000:1000 /home/${USER}/.vnc/
+COPY --chown=${USER}:${USER} .vnc/ ${HOME}/.vnc/
 
-WORKDIR /home/${USER}
+WORKDIR ${HOME}
 USER ${USER}
 RUN echo -e "${USER}\n${USER}\n" | vncpasswd -f > ~/.vnc/passwd
 
