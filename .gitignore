@@ -44,3 +44,5 @@
 # catkin
 build/
 devel/
+logs/
+.catkin_tools/
