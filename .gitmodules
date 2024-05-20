@@ -1,0 +1,5 @@
+[submodule "catkin_ws/src/ros_lecture"]
+path = catkin_ws/src/ros_lecture
+url = https://github.com/Riliumph/ros_lecture.git
+branch = master
+ignore = all
