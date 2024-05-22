@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "debug",
+            "name": "hello_world_lib",
             "type": "cppdbg",
             "request": "launch",
             "cwd": "${fileDirname}",
-            "program": "${workspaceFolder}/bin/${workspaceFolderBasename}",
+            "program": "${workspaceFolder}/catkin_ws/pkg_sample/hello_world_lib/bin/hello_world_lib",
             "args": [],
             "environment": [],
             "externalConsole": false,
@@ -37,11 +37,11 @@
             ]
         },
         {
-            "name": "Unit Test",
+            "name": "hello_world_lib Unit Test",
             "type": "cppdbg",
             "request": "launch",
             "cwd": "${fileDirname}",
-            "program": "${workspaceFolder}/bin/test",
+            "program": "${workspaceFolder}/catkin_ws/pkg_sample/hello_world_lib/bin/test",
             "args": [],
             "environment": [],
             "externalConsole": false,
