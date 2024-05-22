@@ -58,3 +58,48 @@ $ echo $ROS_PACKAGE_PATH
 ```
 
 環境変数に取り込まれ、認識されたことが確認できる。
+
+## パッケージの作成
+
+`catkin`を使ってパッケージを作成する。  
+
+```console
+$ cd catkin_ws/src/
+$ catkin_create_pkg pkg_sample
+Created file pkg_sample/package.xml
+Created file pkg_sample/CMakeLists.txt
+Successfully created files in /home/ros_dev/workspace/catkin_ws/src/pkg_sample. Please adjust the values in package.xml.
+```
+
+`catkin_create_pkg`は、カレントディレクトリで以下の作業を行うだけである。
+
+- 引数であるパッケージ名のディレクトリを作成する
+- 作成したディレクトリ内部に`package.xml`を作成する
+- 作成したディレクトリ内部に`CMakeLists.txt`を作成する
+
+> 特に、`$ROS_PACKAGE_PATH`配下である必要もなければ、そういった`catkin`エコシステムに影響する挙動ではない模様。
+
+### catkinとpackage（要調査）
+
+`catkin`が`package`を認識する仕組みは何だろうか？
+
+## パッケージの履歴
+
+一度`catkin_make`や`catkin build`を行った後に、`ROS_PACKAGE_PATH`を実行してみる。  
+当然ながら、初期化されていることが分かる。
+
+```console
+$ echo $ROS_PACKAGE_PATH
+/opt/ros/noetic/share
+```
+
+仮に、パッケージソースを削除していても、`build`ディレクトリ内部に残ったキャッシュがある限り、`devel/setup.sh`を実行したらキャッシュがロードされる。
+
+```console
+$ source ./devel/setup.bash
+$ echo $ROS_PACKAGE_PATH
+/home/ros_dev/workspace/catkin_ws/src/cacheed_ros/cached_pkg:/opt/ros/noetic/share
+```
+
+> 例えば、次のようなファイルが存在する。  
+> `build/cached_pkg/catkin_generated/setup_cached.sh`
