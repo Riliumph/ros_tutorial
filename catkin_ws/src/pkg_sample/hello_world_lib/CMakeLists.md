@@ -22,6 +22,12 @@ find_package(catkin REQUIRED
 > e.g. `catkin_INCLUDE_DIRS`など  
 > 参照：6.2 なぜCatkinパッケージはコンポーネントとして指定されるのか？
 
+このマクロが実行されたとき、以下の変数が定義される。
+
+- `catkin_INCLUDE_DIRS`
+- `catkin_LIBRARIES`
+- `catkin_DEFINITIONS`
+
 ## catkin_package
 
 catkin謹製のCMakeマクロ。
@@ -48,6 +54,8 @@ Makefileにおける`INCLUDE`変数（`-I`で作る配列）そのもの。
 ライブラリを作成するマクロ。  
 
 ## target_link_libraries
+
+引数：`<target> <PRIVATE|PUBLIC|INTERFACE> <library> ...`
 
 リンクするライブラリのパスを追加するマクロ。  
 これが無いと`#include <ros/ros.h>`はできるのでAPIまでは到達するが、内部の実装が読めないのでエラーとなる。
