@@ -1,0 +1,10 @@
+# http://wiki.ros.org/ja/actionlib#CA-9dc13d410514bbb427a5931ec9936896b8cf0abf_3
+# goal定義、result定義、feedback定義の順に定義され、それぞれハイフン3つ（---）で区切られなければならない。
+# Define the goal
+uint32 dishwasher_id  # Specify which dishwasher we want to use
+---
+# Define the result
+uint32 total_dishes_cleaned
+---
+# Define a feedback message
+float32 percent_complete

@@ -8,6 +8,7 @@
                 "/usr/local/include/**",
                 "/opt/ros/noetic/include",
                 "${workspaceFolder}/catkin_ws/src/**",
+                "${workspaceFolder}/catkin_ws/devel/**",
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
