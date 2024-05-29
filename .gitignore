@@ -47,4 +47,5 @@ bin/
 build/
 devel/
 logs/
+install/
 .catkin_tools/
