@@ -136,6 +136,9 @@ ${catkin_INCLUDE_DIRS}
 add_executable(server_node
     src/server.cpp
 )
+add_executable(client_node
+    src/client.cpp
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -151,6 +154,11 @@ add_executable(server_node
 target_link_libraries(server_node
   ${catkin_LIBRARIES}
 )
+target_link_libraries(client_node
+  ${catkin_LIBRARIES}
+)
+
+
 
 #############
 ## Install ##
