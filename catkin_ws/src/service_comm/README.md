@@ -2,15 +2,25 @@
 
 引数を二つ渡すとその加算結果を返すサービス
 
-## 実行方法
+## ビルド
 
-共通して、各ターミナルでROSを認識させること
+workspaceへ移動し、パッケージを認識させる。
+
+> この行動はすべてのターミナルで行う必要がある。
 
 ```console
 $ cd catkin_ws
-$ overlay 
+$ overlay
 /home/ros_dev/workspace/catkin_ws/src/service_comm:/opt/ros/noetic/share
 ```
+
+ビルドコマンドを実行する。
+
+```console
+$ catkin build
+```
+
+## 実行方法
 
 ### roscore ターミナル
 
