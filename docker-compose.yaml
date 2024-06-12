@@ -7,7 +7,8 @@ services:
     shm_size: 256m # GUI用に共有メモリ拡張
     stdin_open: true
     tty: true
-    volumes: # docker-compse.yamlのパスがroot
+    volumes:
+      # docker-compse.yamlのパスがroot
       - .:/home/ros_dev/workspace:cached
     # NW
     hostname: vncserver
@@ -30,6 +31,24 @@ services:
       # noVNC port
       - target: 6080
         published: 6081
+
+  db:
+    build:
+      context: ./db
+      dockerfile: dockerfile
+    restart: always
+    hostname: db_server
+    volumes:
+      - type: bind
+        source: initdb
+        target: /docker-entrypoint-initdb.d
+    networks:
+      - ros_nw
+    ports:
+      - target: 5432
+        published: 5432
+    stdin_open: false
+    tty: false
 
 networks:
   ros_nw:

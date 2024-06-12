@@ -10,6 +10,9 @@ RUN apt-get -qq update \
     silversearcher-ag\
     vim less\
     lsof curl wget dnsutils iproute2 iputils-ping traceroute\
+    # database
+    postgresql-client\
+    libpqxx-dev\
     # docker multiprocess
     supervisor\
     # Windows System系
