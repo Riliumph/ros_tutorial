@@ -105,7 +105,7 @@ find_package(catkin REQUIRED
 catkin_package(
  INCLUDE_DIRS src
  LIBRARIES service_cli_lib
- CATKIN_DEPENDS service_comm
+ CATKIN_DEPENDS roscpp std_msgs service_comm
 #  DEPENDS system_lib
 )
 
