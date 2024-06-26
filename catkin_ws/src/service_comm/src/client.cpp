@@ -5,7 +5,7 @@
 #include "ros/ros.h"
 #include "service_comm/AddTwoInts.h"
 // original
-#include "service.hpp"
+#include "add_two_ints.h"
 
 using namespace std::literals::string_literals;
 
@@ -13,7 +13,7 @@ int
 main(int argc, char** argv)
 {
   std::stringstream ss;
-  ss << service_name << "_client";
+  ss << add_two_ints::service_name << "_client";
   auto node_name = ss.str();
   ros::init(argc, argv, node_name.c_str());
   if (argc != 3) {
@@ -21,17 +21,11 @@ main(int argc, char** argv)
     return 1;
   }
 
-  ros::NodeHandle n;
-  auto client = n.serviceClient<service_comm::AddTwoInts>(service_name);
-  service_comm::AddTwoInts srv;
-  srv.request.a = atoll(argv[1]);
-  srv.request.b = atoll(argv[2]);
-  if (client.call(srv)) {
-    ROS_INFO("Sum: %ld", (long int)srv.response.sum);
-  } else {
-    ROS_ERROR("Failed to call service add_two_ints");
-    return 1;
-  }
+  add_two_ints::client cli;
+  service_comm::AddTwoInts msg;
+  msg.request.a = atoll(argv[1]);
+  msg.request.b = atoll(argv[2]);
+  cli.send(msg);
 
   return 0;
 }
